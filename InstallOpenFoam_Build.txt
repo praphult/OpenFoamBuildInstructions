@@ -1,0 +1,88 @@
+#================================================
+# OpenFoam-v1906 Build Guide
+#
+# Created by : Praphul
+# Date       : 03/07/2019
+#================================================
+
+
+1) Download the archives OpenFoam-v1906 and Thirdparty-V1906 from the website Openfoam.com
+
+
+2) Extract the files to the desired location 
+	a. sudo tar -xvzf <filename>.tgz  <Destination Directory>
+	b. /usr/local/OpenFOAM - Preferred Destination Directory
+   
+   
+3) Change the persmissions
+	a. sudo chown -R $USER /usr/local/OpenFOAM
+		1. This step is necessary or else it will be difficult to install OpenFOAM with the existing file permissions. 
+
+
+4) Source the environment
+	a. add the following line to the ~/.bashrc
+		1. alias of19='source /usr/local/OpenFoam/OpenFoam-v1906/etc/bashrc'
+   
+5) Check for the system requirements via openfoam website
+        a. For example the system requirements of this version of OpenFoam is found at              <url:https://www.openfoam.com/documentation/system-requirements.php>
+
+6) Change the installation path in the /etc/bashrc file inthe OpenFoam-v1906 directory.
+	a. By default, the project directory will be at $HOME/OpenFOAM. 
+	b. In this case as we are installing it into /usr/local/OpenFOAM, comment out the default project directory statement 
+
+		1. comment this statement  
+                   projectDir="$HOME/OpenFOAM/OpenFOAM-$WM_PROJECT_VERSION"
+
+		2. uncomment this statement 
+		   projectDir="/usr/local/OpenFOAM/OpenFOAM-$WM_PROJECT_VERSION"
+
+		3. Include the above statement if it is not present.
+   
+7) Source the installation by typing of19 or by typing source /usr/local/OpenFOAM/OpenFOAM-v1906/etc/bashrc
+    
+
+
+8) type foam
+        a. Notice that the directory has been changed to OpenFOAM-v1906
+
+9) Compile openFoam
+	a. Type the following
+		1. ./Allwmake -j -s -l 2>&1 | tee log_compile.txt
+		2. This will compile and redirect the stdout and stderr to the file log_compile.txt using all the cores of the system.  
+
+#======================================================
+# Post compilation steps
+#      To check if OpenFOAM has been compiled properly
+#=======================================================
+    
+    
+10) After completion of the compilation, open a new terminal and source the OpenFoam environment by typing
+       a. of19
+
+11) Vadidate build by typing 
+	a. foamInstallationTest
+
+12) Create User run directory
+	a. mkdir -p $FOAM_RUN
+		1. This will create a directory in the $HOME directory named OpenFOAM/<user>-v1906/run
+	b. type run in the terminal so that the directory is changed to ~/OpenFOAM/<user>-v1906/run
+   
+
+13) Test installation with a simple tutorial.
+	a. cp -r $FOAM_TUTORIALS/incompressible/simpleFoam/pitzDaily
+	b. cd pitzDaily
+	c. blockMesh
+	d. simpleFoam
+   
+
+14) If everything works fine
+
+#==============================================================================
+#   UREKA !!! YOU HAVE COMPILED OPENFOAM- V1906 SUCESSFULLY
+#             Have a treat at Starbucks if u are rich
+#                  if you are poor, then grab a coffee at saravana bhavan 
+#===============================================================================
+
+
+	   
+    

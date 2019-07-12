@@ -1,0 +1,66 @@
+#================================================
+# ThirdParty-V1906 Build Instructions
+# 
+# Created by : Praphul 
+# Date       : 05/07/2019
+#================================================
+
+
+1) Proceed to this step after following instructions on Compiling OpenFOAM-V1906
+
+
+2) Install the dependencies of the system 
+  
+	a. ThirdParty 1906 - <url:https://develop.openfoam.com/Development/ThirdParty-plus/blob/develop/BUILD.md>
+	b. OpenFoam   1906   - <url:https://develop.openfoam.com/Development/OpenFOAM-plus/blob/develop/doc/Requirements.md>
+
+
+3) Download qt and unpack it to the thirdparty directory (In this case version 5.9.3) 
+
+
+4) Download metis, mesa and unpack it to the third party directory 
+  
+
+5) Change to Thirdparty directory
+	a. Make qt
+		1. ./makeQt 5.12.0 2>&1 | tee makeQtlog.txt
+
+		2. qt version 5.9.3 caused build problem due to an issue with qt-webengine therefore had to use 5.12.0 version of qt and make it. 
+		3. qt system version can be checked by typing in terminal
+			a. qmake --version  
+
+6) Make mesa (optional)
+       a. ./makeMesa 2>&1 | tee MesaCompile_log.txt
+	
+7) Make metis (optional) 
+       a. ./makeMETIS 2>&1 | tee MetisCompile_log.txt
+   
+   
+10) Make paraview
+	a. Navigate to /usr/local/OpenFOAM/OpenFOAM-v1906/etc/config.sh and edit the paraview file
+		1. change the qt-system to qt-5.12.0
+    
+	b. Now, make Paraview (making paraview with mpi, python, mesa support) 
+   
+
+		1. ./makeParaView -mpi=0 -mesa-prefix $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/mesa-17.1.1 -python -python-include /usr/include/python2.7 -python-lib /usr/lib/x86_64-linux-gnu/libpython2.7.so -qt-5.12.0 -suffix mesa-mpi-py-qt 2>&1 | tee makeParaview_qt_mesa_py_mpi_log.txt 
+
+		2. normally a flag of -python will suffice as the ./makeParaview will find the python libraries and include files  by itself. However, if it is not able to find the same and the compilation terminates half way, then its better to provide the paths for the include and library files of python explicitly. 
+
+
+    
+11) Compile PV reader
+	a. cd $FOAM_UTILITIES/postProcessing/graphics/PVReaders
+	b. ./Allwmake -j 2>&1 | tee PVreaderCompile_log.txt
+
+
+ 	
+12) Compile openfoam again using ./allwmake again 
+	a. cd $WM_PROJECT_DIR
+	b. ./Allwmae -j 2>&1 | tee OpenFoam_2ndCompile.txt
+
+#===========================================================
+# Congrats!!! 
+# You have sucessfully compiled openFoam and Paraview V1906 
+#===========================================================
+
